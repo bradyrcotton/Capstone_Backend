@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Shooter, Rifle
-from .serializers import ShooterSerializer, RifleSerializer
+from .models import Shooter, Rifle, Dope
+from .serializers import ShooterSerializer, RifleSerializer, DopeSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -40,9 +40,12 @@ class RifleList(APIView):
 
 class RifleBuild(APIView):
 
-    def get_object(self, pk):
+    def get_object(self, request):
         try:
-            return Rifle.objects.get(pk=pk)
+            rifle = Rifle.objects.filter(shooter_id=request)
+
+            return rifle
+
         except Rifle.DoesNotExist:
             raise Http404
 
@@ -62,4 +65,24 @@ class RifleBuild(APIView):
     def delete(self, request, pk):
         rifle = self.get_object(pk)
         rifle.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class DopeList(APIView):
+
+    def get(self, request):
+        dope = Dope.objects.all()
+        serializer = DopeSerializer(dope, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = DopeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        dope = self.get_object(pk)
+        dope.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
