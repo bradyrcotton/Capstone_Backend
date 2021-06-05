@@ -69,6 +69,11 @@ class RifleBuild(APIView):
 
 
 class DopeList(APIView):
+    def get_object(self, pk):
+        try:
+            return Dope.objects.get(pk=pk)
+        except Dope.DoesNotExist:
+            raise Http404
 
     def get(self, request):
         dope = Dope.objects.all()
@@ -86,3 +91,4 @@ class DopeList(APIView):
         dope = self.get_object(pk)
         dope.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
