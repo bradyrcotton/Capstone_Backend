@@ -15,7 +15,9 @@ class Rifle(models.Model):
     windSpeed = models.IntegerField(default=0)
     boreToSight = models.IntegerField(default=2)
     shotAngle = models.IntegerField(default=0)
+    rifleName = models.CharField(default=None, max_length=50)
     shooter = models.ForeignKey('calculator.Shooter', default=None, null=True, on_delete=models.CASCADE)
+
 
 class Dope(models.Model):
     caliber = models.IntegerField(default=30)

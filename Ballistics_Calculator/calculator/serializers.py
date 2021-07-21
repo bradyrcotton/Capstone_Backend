@@ -12,7 +12,7 @@ class RifleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rifle
         fields = ['id', 'caliber', 'scopeAdjustment', 'ammoWeight', 'barrelLength', 'currentZero', 'windSpeed',
-                  'boreToSight', 'shotAngle', 'shooter']
+                  'boreToSight', 'shotAngle', 'rifleName', 'shooter']
 
 
 class DopeSerializer(serializers.ModelSerializer):
